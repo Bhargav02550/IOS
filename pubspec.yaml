@@ -36,6 +36,7 @@ dependencies:
   firebase_core: ^2.13.1
   flutter:
     sdk: flutter
+  flutter_keyboard_visibility: ^5.4.1
   flutter_svg: ^2.0.6
   fluttertoast: ^8.2.2
   mongo_dart: ^0.9.1

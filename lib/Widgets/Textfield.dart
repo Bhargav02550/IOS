@@ -1,12 +1,11 @@
-// ignore: file_names
 import 'package:flutter/material.dart';
 
 class Textf extends StatefulWidget {
   const Textf({
-    super.key,
+    Key? key,
     required this.title,
     required this.controller,
-  });
+  }) : super(key: key);
 
   final String title;
   final TextEditingController controller;
@@ -29,6 +28,7 @@ class _TextState extends State<Textf> {
         ),
         child: Center(
           child: TextField(
+            enabled: true, // Make the text input editable
             controller: widget.controller,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.only(left: 15),

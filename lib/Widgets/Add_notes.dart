@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
+// ignore: camel_case_types
 class Add_notes extends StatelessWidget {
   const Add_notes({
     super.key,
@@ -16,11 +18,29 @@ class Add_notes extends StatelessWidget {
   final TextEditingController tittle;
   final TextEditingController notes;
 
+  // Function to get the present time
+
+  String getPresentTime() {
+    var now = DateTime.now();
+    var formatter = DateFormat('hh:mm a');
+    return formatter.format(now);
+  }
+
+  // Function to get the present date month year
+  String getPresentDateMonthYear() {
+    var now = DateTime.now();
+    var formatter = DateFormat('dd MMMM yyyy');
+    return formatter.format(now);
+  }
+
   Future<void> notesadd(String tittle, String notes, String id) async {
     await FirebaseFirestore.instance.collection('Notes').add({
-      'Notes': notes,
+      'notes': notes,
       'id': id,
-      'tittle': tittle,
+      'tittle': tittle.isEmpty ? 'Untitled' : tittle,
+      'cime': getPresentTime(),
+      'Date': getPresentDateMonthYear(),
+      'utime': getPresentTime(),
     });
   }
 
@@ -33,6 +53,7 @@ class Add_notes extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.grey.shade50,
             borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.black),
           ),
           height: high * 0.7,
           width: wid * 0.9,
@@ -58,8 +79,10 @@ class Add_notes extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 10),
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(8)),
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Colors.black),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10),
                       child: TextField(
@@ -84,8 +107,10 @@ class Add_notes extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 10),
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(8)),
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Colors.black),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10),
                       child: TextField(
@@ -105,8 +130,8 @@ class Add_notes extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -122,7 +147,7 @@ class Add_notes extends StatelessWidget {
                         child: const Text(
                           'Add Notes',
                         ),
-                      )
+                      ),
                     ],
                   ),
                 )

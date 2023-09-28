@@ -72,7 +72,7 @@ class _RegisterPageState extends State<RegisterPage> {
           onTap: widget.onTap,
           child: Text(
             value,
-            style: const TextStyle(color: Colors.amber),
+            style: const TextStyle(color: Colors.blue),
           ),
         ),
       ],

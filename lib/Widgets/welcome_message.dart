@@ -39,7 +39,7 @@ class Welcomemessage extends StatelessWidget {
               TextSpan(
                 text: third,
                 style: TextStyle(
-                  color: Colors.amber[700],
+                  color: Colors.blue[700],
                   fontFamily: 'Broad',
                   fontSize: 45,
                   fontWeight: FontWeight.w100,

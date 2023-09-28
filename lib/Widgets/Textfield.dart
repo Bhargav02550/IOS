@@ -23,7 +23,7 @@ class _TextState extends State<Textf> {
         width: double.infinity,
         height: 60,
         decoration: BoxDecoration(
-          color: Colors.amber[100],
+          color: Colors.blue[100],
           borderRadius: BorderRadius.circular(15),
         ),
         child: Center(

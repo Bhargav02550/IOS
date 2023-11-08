@@ -1,43 +1,59 @@
 import 'package:flutter/material.dart';
 
-class Textf extends StatefulWidget {
-  const Textf({
-    Key? key,
-    required this.title,
-    required this.controller,
-  }) : super(key: key);
+class Textfn extends StatelessWidget {
+  Textfn(
+      {super.key,
+      required this.countryController,
+      required this.hint,
+      required this.phn});
 
-  final String title;
-  final TextEditingController controller;
+  final TextEditingController countryController;
+  final String hint;
+  String phn;
 
-  @override
-  State<Textf> createState() => _TextState();
-}
-
-class _TextState extends State<Textf> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Container(
-        width: double.infinity,
-        height: 60,
-        decoration: BoxDecoration(
-          color: Colors.blue[100],
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Center(
-          child: TextField(
-            enabled: true, // Make the text input editable
-            controller: widget.controller,
-            decoration: InputDecoration(
-              contentPadding: const EdgeInsets.only(left: 15),
-              hintText: widget.title,
-              border: InputBorder.none,
-              floatingLabelBehavior: FloatingLabelBehavior.never,
+    return Container(
+      height: 55,
+      decoration: BoxDecoration(
+          border: Border.all(width: 1, color: Colors.grey),
+          borderRadius: BorderRadius.circular(10)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const SizedBox(
+            width: 10,
+          ),
+          SizedBox(
+            width: 40,
+            child: TextField(
+              enabled: false,
+              controller: countryController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+              ),
             ),
           ),
-        ),
+          const Text(
+            "|",
+            style: TextStyle(fontSize: 33, color: Colors.grey),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Expanded(
+              child: TextField(
+            onChanged: (value) {
+              phn = value;
+            },
+            keyboardType: TextInputType.phone,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: hint,
+            ),
+          ))
+        ],
       ),
     );
   }

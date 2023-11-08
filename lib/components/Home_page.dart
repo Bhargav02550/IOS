@@ -50,8 +50,8 @@ class _HomepageState extends State<Homepage> {
             userSnapshot.data() as Map<String, dynamic>?;
 
         // Check if 'Name' field exists
-        if (userData != null && userData.containsKey('Name')) {
-          final name = userData['Name'] as String?;
+        if (userData != null && userData.containsKey('name')) {
+          final name = userData['name'] as String?;
           setState(() {
             userDataUrl = name;
           });
@@ -65,7 +65,7 @@ class _HomepageState extends State<Homepage> {
   }
 
   Future<void> notesadd(String tittle, String notes, String id) async {
-    await FirebaseFirestore.instance.collection('Notes').add({
+    await FirebaseFirestore.instance.collection('notes').add({
       'notes': notes,
       'id': id,
       'tittle': tittle,
@@ -104,12 +104,25 @@ class _HomepageState extends State<Homepage> {
         },
       ),
       appBar: AppBar(
-        backgroundColor: Colors.blue[100],
+        leading: null,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text("Hello! $userDataUrl"),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Hello! $userDataUrl",
+                  style: const TextStyle(fontSize: 20),
+                ),
+                Text(
+                  'Welcome back',
+                  style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+                )
+              ],
+            )
           ],
         ),
         actions: [
@@ -181,7 +194,7 @@ class _HomepageState extends State<Homepage> {
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
-            .collection("Notes")
+            .collection("notes")
             .where("id", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
             .snapshots(),
         builder: (context, snapshot) {
@@ -361,7 +374,7 @@ class _HomepageState extends State<Homepage> {
                                               onPressed: () async {
                                                 // Update the note in Firebase
                                                 await FirebaseFirestore.instance
-                                                    .collection("Notes")
+                                                    .collection("notes")
                                                     .doc(snapshot
                                                         .data!.docs[index].id)
                                                     .delete();
@@ -374,7 +387,7 @@ class _HomepageState extends State<Homepage> {
                                               onPressed: () async {
                                                 // Update the note in Firebase
                                                 await FirebaseFirestore.instance
-                                                    .collection("Notes")
+                                                    .collection("notes")
                                                     .doc(snapshot
                                                         .data!.docs[index].id)
                                                     .update({

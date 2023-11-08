@@ -25,7 +25,7 @@ class _TextState extends State<Textp> {
       child: Container(
         height: 60,
         decoration: BoxDecoration(
-          color: Colors.blue[100],
+          color: Colors.green[100],
           borderRadius: BorderRadius.circular(15),
         ),
         child: Center(

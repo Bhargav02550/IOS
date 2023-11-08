@@ -34,13 +34,14 @@ class Add_notes extends StatelessWidget {
   }
 
   Future<void> notesadd(String tittle, String notes, String id) async {
-    await FirebaseFirestore.instance.collection('Notes').add({
+    await FirebaseFirestore.instance.collection('notes').add({
       'notes': notes,
       'id': id,
       'tittle': tittle.isEmpty ? 'Untitled' : tittle,
       'cime': getPresentTime(),
       'Date': getPresentDateMonthYear(),
       'utime': getPresentTime(),
+      'udate': getPresentDateMonthYear(),
     });
   }
 
@@ -114,10 +115,10 @@ class Add_notes extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10),
                       child: TextField(
-                        textInputAction: TextInputAction.done,
+                        textInputAction: TextInputAction.newline,
                         controller: notes,
                         onChanged: (value) {},
-                        maxLines: 10,
+                        maxLines: 5,
                         decoration: const InputDecoration(
                           hintText: 'Enter your Notes',
                           border: InputBorder.none,

@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         useMaterial3: true,
-        colorSchemeSeed: Colors.blue,
+        colorSchemeSeed: const Color.fromARGB(255, 0, 47, 2),
         fontFamily: 'Poppins',
       ),
       home: const Widgettree(),

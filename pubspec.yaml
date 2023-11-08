@@ -34,13 +34,16 @@ dependencies:
   dynamic_color: ^1.6.5
   firebase_auth: ^4.6.1
   firebase_core: ^2.13.1
+  firebase_storage: ^11.3.1
   flutter:
     sdk: flutter
-  flutter_keyboard_visibility: ^5.4.1
   flutter_svg: ^2.0.6
   fluttertoast: ^8.2.2
+  http: ^1.1.0
+  image_picker: ^1.0.4
   intl: ^0.18.1
-  mongo_dart: ^0.9.1
+  mobkit_dashed_border: ^0.0.5
+  pinput: ^3.0.1
 
 dev_dependencies:
   flutter_lints: ^2.0.0

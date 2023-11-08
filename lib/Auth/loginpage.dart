@@ -1,14 +1,18 @@
+import 'package:database/Auth/Login_verify.dart';
+import 'package:database/Auth/Verify.dart';
+import 'package:database/Auth/otpauth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../Widgets/Textfield.dart';
 import '../Widgets/images.dart';
-import '../Widgets/password_field.dart';
 import '../Widgets/welcome_message.dart';
 import 'auth.dart';
 
 class Loginpage extends StatefulWidget {
-  final Function()? onTap;
-  const Loginpage({super.key, required this.onTap});
+  static String verify = '';
+  const Loginpage({
+    super.key,
+  });
 
   @override
   State<Loginpage> createState() => _LoginpageState();
@@ -16,9 +20,17 @@ class Loginpage extends StatefulWidget {
 
 class _LoginpageState extends State<Loginpage> {
   String? errorMessage = '';
+  var phone = "";
 
   final TextEditingController _controlleremail = TextEditingController();
   final TextEditingController _controllerpassword = TextEditingController();
+  TextEditingController countryController = TextEditingController();
+
+  @override
+  void initState() {
+    countryController.text = "+91";
+    super.initState();
+  }
 
   Future<void> signInWithEmailAndPassword() async {
     try {
@@ -46,26 +58,6 @@ class _LoginpageState extends State<Loginpage> {
     );
   }
 
-  Widget _regorlog(
-    String value,
-  ) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text(
-          'Dosen\'t have an acoount?  ',
-        ),
-        GestureDetector(
-          onTap: widget.onTap,
-          child: Text(
-            value,
-            style: const TextStyle(color: Colors.blue),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _errorMessage() {
     return Text(errorMessage == '' ? '' : 'Humm ? $errorMessage');
   }
@@ -75,36 +67,115 @@ class _LoginpageState extends State<Loginpage> {
     final double high = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       //backgroundColor: Colors.grey,
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               images(
                 siz: high / 2,
-                path: 'images/Mobile login-cuate.svg',
+                path: 'images/farm.svg',
+              ),
+              const SizedBox(
+                height: 25,
               ),
               const Welcomemessage(
                 first: 'Heyy!',
                 second: 'Good to see you ',
-                third: 'Again',
+                third: 'Here',
               ),
-              Textf(
-                title: 'Enter Your Mail',
-                controller: _controlleremail,
+              const SizedBox(
+                height: 10,
               ),
-              Textp(
-                title: 'Enter Your Password',
-                controller: _controllerpassword,
-                visible: true,
+              const Text(
+                "Enter your mobile number for verification",
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Container(
+                height: 55,
+                decoration: BoxDecoration(
+                    border: Border.all(width: 1, color: Colors.grey),
+                    borderRadius: BorderRadius.circular(10)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    SizedBox(
+                      width: 40,
+                      child: TextField(
+                        enabled: false,
+                        controller: countryController,
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                    const Text(
+                      "|",
+                      style: TextStyle(fontSize: 33, color: Colors.grey),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                        child: TextField(
+                      onChanged: (value) {
+                        phone = value;
+                      },
+                      keyboardType: TextInputType.phone,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "Enter your Mobile Number",
+                      ),
+                    ))
+                  ],
+                ),
               ),
               _errorMessage(),
-              _submitButton('LOGIN'),
-              _regorlog('Register'),
+              SizedBox(
+                width: double.infinity,
+                height: 45,
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10))),
+                    onPressed: () async {
+                      await FirebaseAuth.instance.verifyPhoneNumber(
+                        phoneNumber: countryController.text + phone,
+                        verificationCompleted:
+                            (PhoneAuthCredential credential) {},
+                        verificationFailed: (FirebaseAuthException e) {},
+                        codeSent: (String verificationId, int? resendToken) {
+                          Loginpage.verify = verificationId;
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const MyVerify(
+                                      name: 'null',
+                                    )),
+                          );
+                        },
+                        codeAutoRetrievalTimeout: (String verificationId) {},
+                      );
+                    },
+                    child: const Text("Verify Mobile Number")),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
             ],
           ),
         ),

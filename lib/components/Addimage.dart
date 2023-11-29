@@ -15,11 +15,12 @@ class AddItem extends StatefulWidget {
 }
 
 class _AddItemState extends State<AddItem> {
-  final TextEditingController _controllerName = TextEditingController();
+  final TextEditingController _productname = TextEditingController();
   final TextEditingController _description = TextEditingController();
   final TextEditingController _price = TextEditingController();
   final TextEditingController _currency = TextEditingController();
   final TextEditingController countrycontroller = TextEditingController();
+  final TextEditingController _number = TextEditingController();
   String? userDataUrl;
 
   @override
@@ -108,21 +109,40 @@ class _AddItemState extends State<AddItem> {
   Future<void> postData() async {
     fetchUserData();
     final msg = jsonEncode({
-      'vendor': userDataUrl,
-      'name': _controllerName.text,
-      'description': _description.text,
-      'price': 20,
-      'image_url': imageUrl,
-      'rating': 5,
+      'name': userDataUrl,
+      'number': _number.text,
+      'items': [
+        {
+          'itemname': _productname.text,
+          'itemdis': _description.text,
+          'price': _price.text,
+          'imageurl': imageUrl,
+        }
+      ],
     });
     // ignore: unused_local_variable
     final response = await http.post(
-      Uri.parse('https://729d-103-10-133-46.ngrok-free.app/api/call/shop/add'),
+      Uri.parse('https://3a72-2401-4900-4b36-f3b4-857c-90a0-8a0e-58dd.ngrok-free.app/api/call/shop/add'),
       headers: {
         'Content-Type': 'application/json', // Set the correct content type
       },
       body: msg,
     );
+    if (response.statusCode == 200) {
+      // Show a SnackBar if data is added successfully
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.green[400],
+          content: const Text('Data added successfully!'),
+        ),
+      );
+      _productname.clear();
+      _description.clear();
+      _price.clear();
+      _number.clear();
+      _imageFile = '' as File?;
+    }
   }
 
   GlobalKey<FormState> key = GlobalKey();
@@ -222,7 +242,7 @@ class _AddItemState extends State<AddItem> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0),
                   child: TextField(
-                    controller: _controllerName,
+                    controller: _productname,
                     decoration: const InputDecoration(
                       //contentPadding: EdgeInsets.only(left: 15),
                       border: InputBorder.none,
@@ -255,6 +275,7 @@ class _AddItemState extends State<AddItem> {
                 height: 15,
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
                     height: 55,
@@ -286,10 +307,11 @@ class _AddItemState extends State<AddItem> {
                         const SizedBox(
                           width: 10,
                         ),
-                        const Expanded(
+                        Expanded(
                           child: TextField(
+                            controller: _price,
                             keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText: "Price",
                             ),
@@ -300,7 +322,7 @@ class _AddItemState extends State<AddItem> {
                   ),
                   Container(
                     height: 55,
-                    width: wid / 2.5,
+                    width: wid / 1.9,
                     decoration: BoxDecoration(
                       border: Border.all(width: 1, color: Colors.grey),
                       borderRadius: BorderRadius.circular(10),
@@ -329,12 +351,16 @@ class _AddItemState extends State<AddItem> {
                         const SizedBox(
                           width: 10,
                         ),
-                        const Expanded(
+                        Expanded(
                             child: TextField(
+                          maxLength: 10,
+                          controller: _number,
                           keyboardType: TextInputType.phone,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
+                            counterText: '',
                             border: InputBorder.none,
                             hintText: "Enter your Mobile Number",
+                            hintStyle: TextStyle(fontSize: 14),
                           ),
                         ))
                       ],
@@ -346,7 +372,7 @@ class _AddItemState extends State<AddItem> {
                 height: 15,
               ),
               SizedBox(
-                width: 100,
+                width: 150,
                 child: FilledButton(
                   style: FilledButton.styleFrom(
                     backgroundColor: Colors.green[800],
@@ -358,17 +384,17 @@ class _AddItemState extends State<AddItem> {
                     if (_imageFile == null) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          backgroundColor: Colors.green[400],
+                          backgroundColor: Colors.red[400],
                           content: const Text('Please upload an image'),
                         ),
                       );
                       return;
-                    } else if (_controllerName.text.isEmpty ||
+                    } else if (_productname.text.isEmpty ||
                         _description.text.isEmpty ||
                         _price.text.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          backgroundColor: Colors.green[400],
+                          backgroundColor: Colors.red[400],
                           content: const Text('Please fill all the fields'),
                         ),
                       );
@@ -392,11 +418,13 @@ class _AddItemState extends State<AddItem> {
                       } catch (error) {
                         //Some error occurred
                       }
-
+                      fetchUserData();
                       postData();
+                      // ignore: use_build_context_synchronously
+                      Navigator.pop(context);
                     }
                   },
-                  child: const Text('Submit'),
+                  child: const Text('Add Product'),
                 ),
               )
             ],

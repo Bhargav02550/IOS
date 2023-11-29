@@ -1,3 +1,7 @@
+// ignore_for_file: deprecated_member_use
+
+import 'dart:async';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:database/Auth/auth.dart';
 import 'package:database/components/Addimage.dart';
@@ -16,8 +20,7 @@ class Users extends StatefulWidget {
 
 class _UsersState extends State<Users> {
   // ignore: non_constant_identifier_names
-  final String API =
-      "https://94bc-2401-4900-4ccb-f04d-512-8b24-d880-2541.ngrok-free.app";
+  final String API = "https://f168-103-10-133-192.ngrok-free.app";
   bool shouldShowFloatingActionButton = true;
   String? userDataUrl;
   String? imageUrl;
@@ -28,6 +31,9 @@ class _UsersState extends State<Users> {
   @override
   void initState() {
     super.initState();
+    Timer.periodic(const Duration(seconds: 10), (timer) {
+      fetchData();
+    });
     fetchUserData();
   }
 
@@ -167,12 +173,12 @@ class _UsersState extends State<Users> {
         ],
       ),
       body: RefreshIndicator(
-        onRefresh: () => fetchData(),
+        onRefresh: fetchData,
         child: FutureBuilder(
           future: fetchData(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return GridView.builder(
+              return ListView.builder(
                 itemCount: shops.length,
                 itemBuilder: (context, index) {
                   return Container(
@@ -184,30 +190,64 @@ class _UsersState extends State<Users> {
                         border: Border.all(color: Colors.black),
                       ),
                       padding: const EdgeInsets.symmetric(
-                        vertical: 10,
-                        horizontal: 10,
+                        vertical: 5,
+                        horizontal: 5,
                       ),
                       margin: const EdgeInsets.all(10),
-                      child: Column(
+                      child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            getItemNames(index),
-                            style: const TextStyle(
-                              fontSize: 10,
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.network(
+                              getItemimage(index),
+                              height: 150,
+                              width: 150,
                             ),
                           ),
+                          const SizedBox(
+                            width: 15,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Farm Fresh',
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 10),
+                              ),
+                              Text(getItemNames(index)),
+                              Text("Price ₹:${getItemprice(index)}"),
+                              const SizedBox(
+                                height: 50,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  const SizedBox(
+                                    width: 100,
+                                  ),
+                                  FilledButton(
+                                      style: FilledButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                          backgroundColor: Colors.green[500]),
+                                      onPressed: () {
+                                        _showBottomSheet(context, index);
+                                      },
+                                      child: const Text("More Info"))
+                                ],
+                              )
+                            ],
+                          )
                         ],
                       ),
                     ),
                   );
                 },
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 1,
-                  childAspectRatio: 0.9,
-                ),
               );
             } else {
               return const Center(
@@ -220,28 +260,156 @@ class _UsersState extends State<Users> {
     );
   }
 
+  void _showBottomSheet(BuildContext context, int index) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true, // Ensures full-height bottom sheet
+      builder: (BuildContext context) {
+        return FractionallySizedBox(
+          heightFactor: 0.95, // Adjust as needed, e.g., 0.9 for 90% height
+          child: SingleChildScrollView(
+            child: ClipRRect(
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(10)),
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                color: Colors.white, // Customize background color
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        InkWell(
+                          child: const Icon(Icons.arrow_back_rounded),
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        const Expanded(
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "PRODUCT DETAILS",
+                              style:
+                                  TextStyle(fontFamily: 'Broad', fontSize: 30),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.network(getItemimage(index)),
+                    ),
+                    const SizedBox(
+                      height: 2,
+                    ),
+                    Divider(
+                      thickness: 0.5,
+                      color: Colors.green[900],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          getItemNames(index),
+                          style: const TextStyle(
+                              fontFamily: 'Broad', fontSize: 30),
+                        ),
+                        Text(
+                          '₹${getItemprice(index)}/KG',
+                          style: const TextStyle(
+                              fontFamily: 'Broad', fontSize: 30),
+                        ),
+                      ],
+                    ),
+                    Text(getItemdis(index)),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green[600],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        onPressed: () {
+                          _launchDialer(shops[index].number);
+                        },
+                        child: const Text(
+                          "Contact Seller",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   Future<List<Shop>> fetchData() async {
     final response = await http.get(
-      Uri.parse('$API/api/call/shop'),
+      Uri.parse(
+          'https://3a72-2401-4900-4b36-f3b4-857c-90a0-8a0e-58dd.ngrok-free.app/api/call/shop'),
     );
 
-    var data = jsonDecode(response.body.toString());
-
     if (response.statusCode == 200) {
+      var data = jsonDecode(response.body) as List<dynamic>;
       shops.clear();
-      for (Map<String, dynamic> index in data) {
-        shops.add(Shop.fromJson(index));
+      for (Map<String, dynamic> shopData in data) {
+        //shops.clear();
+        Shop shop = Shop.fromJson(shopData);
+        shops.add(shop);
       }
-      //print("Number of items added to Student: $shops");
       return shops;
     } else {
-      return shops;
+      // Handle the case where the response status code is not 200
+      throw Exception(
+          'Failed to load data. Status code: ${response.statusCode}');
     }
   }
 
   String getItemNames(int index) {
     List<String> itemNames =
+        shops[index].items.map((item) => item.itemname).toList();
+    return itemNames.join(", ");
+  }
+
+  String getItemimage(int index) {
+    List<String> itemNames =
+        shops[index].items.map((item) => item.imageurl).toList();
+    return itemNames.join(", ");
+  }
+
+  String getItemprice(int index) {
+    List<String> itemNames =
+        shops[index].items.map((item) => item.price).toList();
+    return itemNames.join(", ");
+  }
+
+  String getItemdis(int index) {
+    List<String> itemNames =
         shops[index].items.map((item) => item.itemdis).toList();
     return itemNames.join(", ");
+  }
+
+  Future<void> _launchDialer(phoneNumber) async {
+    final Uri phoneLaunchUri = Uri(scheme: 'tel', path: phoneNumber);
+
+    if (await canLaunch(phoneLaunchUri.toString())) {
+      await launch(phoneLaunchUri.toString());
+    } else {
+      throw 'Could not launch $phoneLaunchUri';
+    }
   }
 }

@@ -71,6 +71,7 @@ class _UsersState extends State<Users> {
 
   @override
   Widget build(BuildContext context) {
+    final double wid = MediaQuery.of(context).size.width;
     return Scaffold(
       floatingActionButton: shouldShowFloatingActionButton
           ? FloatingActionButton(
@@ -226,8 +227,8 @@ class _UsersState extends State<Users> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  const SizedBox(
-                                    width: 100,
+                                  SizedBox(
+                                    width: wid / 3.5,
                                   ),
                                   FilledButton(
                                       style: FilledButton.styleFrom(

@@ -28,6 +28,7 @@ class _AddItemState extends State<AddItem> {
     _currency.text = "₹";
     countrycontroller.text = "+91";
     super.initState();
+    fetchUserData();
   }
 
   Future<void> fetchUserData() async {
@@ -429,7 +430,6 @@ class _AddItemState extends State<AddItem> {
                       } catch (error) {
                         //Some error occurred
                       }
-                      fetchUserData();
                       postData();
                       // ignore: use_build_context_synchronously
                       Navigator.pop(context);

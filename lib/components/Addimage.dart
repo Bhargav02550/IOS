@@ -78,6 +78,16 @@ class _AddItemState extends State<AddItem> {
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Container(
+                height: 5,
+                width: 30,
+                decoration: BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.circular(90)),
+              ),
+            ),
             ListTile(
               leading: Icon(
                 Icons.camera_alt,
@@ -122,7 +132,7 @@ class _AddItemState extends State<AddItem> {
     });
     // ignore: unused_local_variable
     final response = await http.post(
-      Uri.parse('https://3a72-2401-4900-4b36-f3b4-857c-90a0-8a0e-58dd.ngrok-free.app/api/call/shop/add'),
+      Uri.parse('https://2512-103-10-133-46.ngrok-free.app/api/call/shop/add'),
       headers: {
         'Content-Type': 'application/json', // Set the correct content type
       },
@@ -152,6 +162,7 @@ class _AddItemState extends State<AddItem> {
   @override
   Widget build(BuildContext context) {
     final double wid = MediaQuery.of(context).size.width;
+    final double hig = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: AppBar(
@@ -202,8 +213,8 @@ class _AddItemState extends State<AddItem> {
                         alignment: Alignment.center,
                         children: [
                           Container(
-                            height: 200,
-                            width: 150,
+                            height: hig / 4.5,
+                            width: wid / 3,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               border: DashedBorder.all(dashLength: 2),

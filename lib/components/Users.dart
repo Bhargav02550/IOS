@@ -187,7 +187,7 @@ class _UsersState extends State<Users> {
                       decoration: BoxDecoration(
                         //color: Colors.red,
                         borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Colors.black),
+                        border: Border.all(color: Colors.grey),
                       ),
                       padding: const EdgeInsets.symmetric(
                         vertical: 5,
@@ -359,8 +359,7 @@ class _UsersState extends State<Users> {
 
   Future<List<Shop>> fetchData() async {
     final response = await http.get(
-      Uri.parse(
-          'https://3a72-2401-4900-4b36-f3b4-857c-90a0-8a0e-58dd.ngrok-free.app/api/call/shop'),
+      Uri.parse('https://2512-103-10-133-46.ngrok-free.app/api/call/shop'),
     );
 
     if (response.statusCode == 200) {

@@ -16,6 +16,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      builder: (BuildContext context, Widget? child) {
+        // Set a fixed text scale factor to disable adaptive font size
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 0.8),
+          child: child!,
+        );
+      },
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(

@@ -1,6 +1,5 @@
 import 'package:database/Auth/loginpage.dart';
 import 'package:database/Auth/Regesterpage.dart';
-import 'package:database/Auth/otpauth.dart';
 import 'package:flutter/material.dart';
 
 class LoginOrRigester extends StatefulWidget {
@@ -22,9 +21,9 @@ class _LoginOrRigesterState extends State<LoginOrRigester> {
   @override
   Widget build(BuildContext context) {
     if (showLoginpage) {
-      return Loginpage();
+      return const Loginpage();
     } else {
-      return RegisterPage();
+      return const RegisterPage();
     }
   }
 }

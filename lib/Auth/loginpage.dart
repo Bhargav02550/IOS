@@ -1,9 +1,6 @@
-import 'package:database/Auth/Login_verify.dart';
 import 'package:database/Auth/Verify.dart';
-import 'package:database/Auth/otpauth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../Widgets/Textfield.dart';
 import '../Widgets/images.dart';
 import '../Widgets/welcome_message.dart';
 import 'auth.dart';

@@ -2,12 +2,9 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:database/Auth/Verify.dart';
-import 'package:database/Auth/otpauth.dart';
-import 'package:database/Widgets/password_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../Widgets/Textfield.dart';
 import '../Widgets/images.dart';
 import '../Widgets/welcome_message.dart';
 import 'auth.dart';

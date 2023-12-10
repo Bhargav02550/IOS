@@ -1,11 +1,6 @@
 import 'package:database/Auth/Regesterpage.dart';
-import 'package:database/Auth/Verify.dart';
-import 'package:database/Auth/loginorregisterpage.dart';
-import 'package:database/Auth/loginpage.dart';
-import 'package:database/components/Addimage.dart';
 import 'package:database/components/Users.dart';
 import 'package:flutter/material.dart';
-import 'Home_page.dart';
 import '../Auth/auth.dart';
 
 class Widgettree extends StatefulWidget {
